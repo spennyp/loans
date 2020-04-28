@@ -1,6 +1,6 @@
 from flask import request, jsonify
 from flask_restful import Resource, Api
-from models import *
+from models import (dbSession, UserModel, UserInfoModel, LoanModel)
 import json
 import bcrypt
 import traceback
@@ -63,6 +63,7 @@ class User(Resource):
             return f"Error: {e}", 400
 
 
+# TODO: Implement oAuth later on
 class Login(Resource):
     def post(self):
         try:
@@ -87,12 +88,13 @@ class Login(Resource):
 
 
 class Logout(Resource):
+    @jwt_required
     def post(self):
         try:
             payload = request.get_json()
             email = payload["email"]
             
-            user = UserModel.query.filter(UserModel.email == email).first()
+            user = UserModel.getUserForEmail(email)
             if user is None:
                 return "Error: No account with that email", 401
 
@@ -150,8 +152,9 @@ class Loan(Resource):
             if loanerUser is None or loaneeUser is None:
                 return "Error: Invalid email", 409 
 
+            # Make sure the user is the loanee or loaner
             jwtId = get_jwt_identity()
-            if not loanerUser.verify(jwtId) and not loaneeUser.verify(jwtId): # Loan must be created by the loanee or the loaner
+            if not loanerUser.verify(jwtId) and not loaneeUser.verify(jwtId): 
                 return "Error: Unauthortized", 401
 
             creatorId = jwtId

@@ -6,11 +6,13 @@ import yaml
 import bcrypt
 from datetime import datetime
 
+# Setting up database connection
+secrets = yaml.load(open("secrets.yaml"), Loader=yaml.FullLoader) # Must add secrets.yaml to run the application
+engine = create_engine(f'mysql+pymysql://{secrets["dbUsername"]}:{secrets["dbPassword"]}@{secrets["dbHost"]}:3306/{secrets["dbName"]}', convert_unicode=True)
 Base = declarative_base()
-dbInfo = yaml.load(open("db.yaml"), Loader=yaml.FullLoader)
-engine = create_engine(f'mysql+pymysql://{dbInfo["username"]}:{dbInfo["password"]}@{dbInfo["host"]}:3306/{dbInfo["dbName"]}', convert_unicode=True)
 dbSession = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
-Base.query = dbSession.query_property()
+Base.query = dbSession.query_property() # Allow querying on models
+
 
 class UserModel(Base):
     __tablename__ = "user"
