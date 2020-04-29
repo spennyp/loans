@@ -28,6 +28,7 @@ api.add_resource(endpoints.Login, "/login")
 api.add_resource(endpoints.Logout, "/logout")
 api.add_resource(endpoints.TokenRefresh, "/refreshToken")
 api.add_resource(endpoints.Loan, "/loan")
+api.add_resource(endpoints.AcceptLoan, "/acceptLoan")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)
