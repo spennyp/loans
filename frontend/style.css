@@ -1,0 +1,110 @@
+html {
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #403E3D;
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.main {
+    display: block;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box; /* Make the 100% reference outside box */
+    background-color: #E4E4E4;
+}
+
+.verticalCenter {
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.horizontalCenter {
+    position: relative;
+    left:50%; 
+    transform: translateX(-50%);
+}
+
+.topnav {
+    width: 100%;
+    height: 80px;
+    border-bottom: 1px solid #E4E4E4;
+}
+
+#logo {
+    width: 40px;
+    height: 40px;
+}
+
+.topnav a {
+    float: left;
+    display: block;
+    color: inherit;
+    text-align: center;
+    padding-left: 30px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+img {
+    width: 100%;
+    height: 100%;
+}
+
+#loginArea {
+    position: relative;
+    width: 45%;
+    height: 450px;
+    background-color: white;
+    margin-top: 100px;
+    box-sizing: border-box; /* Make the 100% reference outside box */
+    display: inline-block;
+}
+
+#loginText {
+    padding: 80px 0 60px 0;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+#loginEmail, #loginPassword {
+    display: block;
+    width: 80%;
+    margin: auto;
+    margin-top: 10px;
+    height: 50px;
+    font-size: 20px;
+    padding: 0 15px 0 15px;
+    box-sizing: border-box;
+    font-weight: 200;
+
+}
+
+#loginButton {
+    display: block;
+    margin: auto;
+    text-align: center;
+    border-radius: 25px;
+    border: none;
+    margin-top: 20px;
+    height: 50px;
+    width: 100px;
+    font-size: 16px; 
+    font-weight: 500;   
+    box-sizing: border-box;
+    background-color: #1E7185;
+    color: white;
+}
+

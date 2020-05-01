@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script type="text/javascript" src="script.js"></script>
+    </head>
+    <body>
+        <div class="topnav">
+            <a href="index.html" class="verticalCenter" id="logo"><img src="img/logo.svg"></a>
+        </div>
+
+        <div class="main">
+            <div id="loginArea" class="horizontalCenter">
+                <div id="loginText">
+                    Sign in to Loans
+                </div>
+                <form name="loginForm" method="post">
+                    <input id="loginEmail" type="text" placeholder="Email address" name="email" required>
+                    <input id="loginPassword" type="password" placeholder="Password" name="password" required>  
+                    <button id="loginButton" type="button" onclick="login()">Sign in</button>
+                </form>
+            </div>
+
+            <div id="test" type="button" onclick="logout()">test</div>
+
+        </div>
+   </body>
+</html>
+
+

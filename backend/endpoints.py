@@ -1,13 +1,18 @@
 from flask import request, jsonify
 from flask_restful import Resource, Api
-from models import (dbSession, UserModel, LoanModel)
+from models import *
 import json
 import bcrypt
 import traceback
-from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
+from flask_jwt_extended import jwt_required
 from datetime import datetime
 from pprint import pprint
 
+
+class Test(Resource):
+    @jwt_required
+    def put(self):
+        return "SUCCESS", 200
 
 class User(Resource):
     @jwt_required
@@ -45,76 +50,10 @@ class User(Resource):
             id = newUser.id # This id is used in the jwt
             dbSession.commit()
 
-            accessToken = create_access_token(identity = id)
-            refreshToken = create_refresh_token(identity = id)
-            return {"status": "success", "accessToken": accessToken, "refreshToken": refreshToken}, 200
+            resp = jsonify({"login": True})
+            return resp, 200
         except Exception as e:
             traceback.print_exc()
-            return f"Error: {e}", 400
-
-
-# TODO: Implement oAuth later on
-class Login(Resource):
-    def post(self):
-        try:
-            payload = request.get_json()
-            email = payload["email"]
-            pw = payload["password"].encode("utf-8")
-            
-            user = UserModel.getUserForEmail(email)
-            if user is None:
-                return "Error: Auth failed", 401 # Don't want to say no email for that account for security reasons
-
-            validated = user.login(pw)
-
-            if validated:
-                accessToken = create_access_token(identity = user.id)
-                refreshToken = create_refresh_token(identity = user.id)
-                return {"status": "success", "accessToken": accessToken, "refreshToken": refreshToken}, 200
-            else:
-                return "Incorrect password", 401
-        except Exception as e:
-            return f"Error: {e}", 400
-
-
-class Logout(Resource):
-    @jwt_required
-    def post(self):
-        try:
-            payload = request.get_json()
-            email = payload["email"]
-            
-            user = UserModel.getUserForEmail(email)
-            if user is None:
-                return "Error: No account with that email", 401
-
-            # Make sure it is the correct user
-            jwtId = get_jwt_identity()
-            if not user.verify(jwtId):
-                return "Error: Unauthortized", 401
-
-            user.logout()
-            return "Success", 200
-        except Exception as e:
-            return f"Error: {e}", 400
-
-
-class TokenRefresh(Resource):
-    @jwt_refresh_token_required
-    def post(self):
-        try:
-            payload = request.get_json()
-            email = payload["email"]
-            user = UserModel.getUserForEmail(email)
-
-            # Make sure it is the correct user
-            jwtId = get_jwt_identity()
-            if user is None or not user.verify(jwtId):
-                return "Error: Unauthortized", 401
-
-            accessToken = create_access_token(identity = jwtId)
-            return {'access_token': accessToken}, 200
-        except Exception as e:
             return f"Error: {e}", 400
 
 

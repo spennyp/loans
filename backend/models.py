@@ -38,6 +38,10 @@ class UserModel(Base):
     def getUserForEmail(email): # Returns the user if it exists, otherwise None
         return UserModel.query.filter(UserModel.email == email).first()
 
+    @staticmethod
+    def getUserForId(id):
+        return UserModel.query.filter(UserModel.id == id).first()
+
     def login(self, pw):
         hashedPw = self.password.encode("utf-8")
         validated = bcrypt.checkpw(pw, hashedPw)
