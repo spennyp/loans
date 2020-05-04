@@ -1,79 +1,85 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Spencer Perkins</title>
+        <title>Login</title>
         <link rel="stylesheet" type="text/css" href="style.css">
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto" rel="stylesheet">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="icon" href="img/s.png">
+        <script type="text/javascript" src="script.js"></script>
     </head>
-    <body id="indexBody">
-        <div class="topnav" id="myTopnav">
-            <a href="index.html" class="active">Spencer Perkins</a>
-            <a href="experience.html" class="verticalCenter">Experience</a>
-            <a href="experience.html" class="verticalCenter">Experience</a>
-            <a href="javascript:void(0);" class="icon" onclick="toggleMenu(this)">
-                    <div class="bar1"></div>
-                    <div class="bar2"></div>
-                    <div class="bar3"></div>
-            </a>
+    <body onload="loadDashboard()">
+        <div class="topnav">
+            <a href="index.html" class="verticalCenter" id="logo"><img src="img/logo.svg"></a>
+            <a href="dashboard.html" class="verticalCenter">My loans</a>
+            <a href="learn.html" class="verticalCenter">Learn</a>
+            <a href="profile.html" class="verticalCenter" id="profileLink"><span class="firstName"></span></a>
         </div>
-            <div class="main">
-                <div id="vantajs">
-                    <div class="card" id="profileCard">
-                        <div class="cardMediaBox" id="profileCardMediaBox">
-                            <img class="cardMedia" id=profileCardMedia src="img/profilePicture.png"/>
-                        </div>
-                        <div class="cardInfoColumn" id=profileCardInfoColumn>
-                            <div class="cardInfo">
-                                <div class="cardHeader">
-                                    <div class="cardTitle">Hey, I'm Spencer!</div>
-                                </div>
-                                <div class="cardSubtitle">I'm a 4th year Engineering Physics Student at UBC, <br> minoring in Entrepreneurship</div>
-                                <div class="cardDescription" id="profileCardDescription">
-                                    <div class=experienceCardDescriptionHeader>I strive to use my skills in engineering and technology to make a positive impact in the world</div>
-                                    <ul id=profileCardDescriptionPoints>                         
-                                        <div id="socialLinks"> 
-                                            <a href="https://www.linkedin.com/in/spencerjperkins/", target="_blank" class=profileLink><img src="img/linkedin.svg" width="50" id="linkedin"/></a>
-                                            <a href="https://github.com/spennyp", target="_blank" class=profileLink><img src="img/github.svg" width="50" id="github"/></a>
-                                            <a href="mailto:hello@spencerperkins.me" class=profileLink><img src="img/mail.svg" width="50" id="mail"/></a>
-                                        </div>
-                                        <p>hello@spencerperkins.me</p>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+
+        <div class="main protected">
+            <div id="welcomeMsg">Good <span id="TOD"></span>, <span class="firstName"></span></div>
+
+            <div class="leftColumn">
+                <div id="loansSummary">
+                    <div class='summaryItem'>
+                        <div class='summaryTitle'>Total Amount Loaned</div>
+                        <div class='summaryValue' id="loanedValue">123</div>
+                    </div>
+                    <div class='summaryItem'>
+                        <div class='summaryTitle'>Total Earnings</div>
+                        <div class='summaryValue' id="earningsValue">123</div>
+                    </div>
+                    <div class='summaryItem'>
+                        <div class='summaryTitle'>Projected Earnings</div>
+                        <div class='summaryValue' id="projectedEarningsValue">123</div>
                     </div>
                 </div>
+
+                <div id="loans">
+                    <div id="loanTitle">Loans</div>
+
+                    <!-- <div class="loanOverview">
+                        <div class="loanLeft">
+                                <div class="loanTop">
+                                    <div class="loanName">Student Loan</div>
+                                    <div class="loanValue">(out of $12000)</div>
+                                    <div class="progressBar">
+                                        <div class="progressBarInfill" style="height:100%; width:20%"></div>
+                                        <div class="progressBarValue">12%</div>
+                                    </div>
+
+                                </div>
+
+                                <div class="loanBottom">
+                                    <div class="interestRateTitle">Interest Rate</div>
+                                    <div class="interestRateValue">3.5%</div>
+                                </div>
+
+                        </div>
+
+                        <div class="loanRight">
+                            <div class="loanTop">
+                                <div class="tag"><span class="loanType">Borrowing from Cole</span></div>
+                                <div class="tag"><span class="nextPayment">Next Payment in 20 days</span></div>
+                            </div>
+
+                            <div class="loanBottom">
+                                <div class="amountOwedTitle">Amount owed</div>
+                                <div class="amountOwedValue">$11 556.82</div>
+                            </div>
+                        </div>
+                    </div> -->
+
+
+
+                </div>
             </div>
+
+
+            <div class="rightColumn">
+                Insights
+            </div>
+
+
+
+
         </div>
    </body>
 </html>
-<script src="three.js"></script>
-<script src="vanta.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script src="scripts.js"></script>
-<script>
-    if ($(window).width() > 960) {
-        VANTA.NET({
-        el: "#vantajs",
-        color: 0xA82330,
-        backgroundColor: 0xffffff,
-        maxDistance: 22.00,
-        spacing: 18.00,
-        showDots: false
-        })
-    } else {
-        VANTA.NET({
-        el: "#vantajs",
-        color: 0xA82330,
-        backgroundColor: 0xffffff,
-        maxDistance: 16.00,
-        spacing: 25.00,
-        showDots: false
-        })
-    }
-</script>
-      
-
-

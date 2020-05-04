@@ -19,7 +19,8 @@ body {
     width: 100%;
     height: 100%;
     box-sizing: border-box; /* Make the 100% reference outside box */
-    background-color: #E4E4E4;
+    background-color: white;
+    padding: 50px 60px 20px 60px;
 }
 
 .verticalCenter {
@@ -40,6 +41,29 @@ body {
     width: 100%;
     height: 80px;
     border-bottom: 1px solid #E4E4E4;
+    box-sizing: border-box;
+    padding: 0 40px;
+}
+
+.leftColumn {
+    display: inline-block;
+    height: 100%;
+    width: 70%;
+    float: left;
+    box-sizing: border-box;
+    padding-right: 10%;
+}
+
+.rightColumn {
+    display: inline-block;
+    height: 100%;
+    width: 30%;
+    float: right;
+    box-sizing: border-box;
+}
+
+#loginMain {
+    background-color: #E4E4E4
 }
 
 #logo {
@@ -52,9 +76,9 @@ body {
     display: block;
     color: inherit;
     text-align: center;
-    padding-left: 30px;
+    padding-right: 30px;
     text-decoration: none;
-    font-size: 17px;
+    font-size: 20px;
 }
 
 img {
@@ -108,3 +132,138 @@ img {
     color: white;
 }
 
+/* appears later than others so takes precidence */
+.protected {
+    /* display: none */
+    visibility: hidden
+}
+
+#profileLink {
+    float: right;
+    padding: 0;
+}
+
+#welcomeMsg {
+    font-size: 32px;
+    padding-bottom: 10px;
+}
+
+#loansSummary {
+    border-top: 1px solid #E4E4E4;
+    border-bottom: 1px solid #E4E4E4;
+    padding: 40px 0;
+}
+
+.summaryItem {
+    display: inline-block;
+    width: 32%;
+}
+
+.summaryTitle {
+    font-size: 16px;
+}
+
+.summaryValue {
+    font-size: 27px;
+}
+
+#loans {
+    padding-top: 60px;
+}
+
+#loanTitle {
+    font-size: 17px;
+}
+
+.loanOverview {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    height: 150px;
+    border: 1px solid #E4E4E4;
+    border-radius: 5px;
+    margin: 20px 0;
+    padding: 15px 20px;
+}
+
+.loanLeft {
+    height: 100%;
+    width: 50%;
+    float: left;
+}
+
+.loanRight {
+    height: 100%;
+    width: 40%;
+    float: right;
+    text-align: right;
+}
+
+.loanTop {
+    width: 100%;
+    height: 70%;
+}
+
+.loanBottom {
+    width: 100%;
+    height: 30%;
+}
+
+.loanName {
+    width: 60%;
+    display: inline-block;
+    text-align: left;
+    box-sizing: border-box;
+    font-size: 20px;
+}
+
+.loanValue {
+    width: 35%;
+    display: inline-block;
+    text-align: right;
+    box-sizing: border-box;
+    font-size: 12px;
+    font-weight: 300;
+}
+
+.interestRateTitle, .amountOwedTitle {
+    color: gray;
+}
+
+.interestRateValue, .amountOwedValue {
+    font-size: 20px;
+}
+
+.progressBar {
+    width: 100%;
+    height: 10px;
+    background-color: rgb(238, 238, 238);
+    border-radius: 5px;
+    margin-top: 15px;
+}
+
+.progressBarInfill {
+    background-color: rgb(55, 112, 131);
+    border-radius: 5px;
+} 
+
+.progressBarValue {
+    font-size: 12px;
+    color: rgb(190, 190, 190);
+}
+
+.tag {
+    width: 100%;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: gray;
+    height: 30%;
+    box-sizing: border-box;
+
+}
+
+.loanType, .nextPayment {
+    background-color: rgb(254, 247, 226);
+    padding: 2px 10px;
+    border-radius: 5px;
+}

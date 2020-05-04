@@ -4,9 +4,10 @@ from models import *
 import json
 import bcrypt
 import traceback
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import (jwt_required, get_jwt_identity)
 from datetime import datetime
 from pprint import pprint
+from errors import *
 
 
 class Test(Resource):
@@ -61,18 +62,8 @@ class Loan(Resource):
     @jwt_required
     def get(self): # Get all loans and their detailed information
         try:
-            payload = request.get_json()
-            email = payload["email"]
-
-            user = UserModel.getUserForEmail(email)
-
-            if user is None:
-                return "Error: Not found", 400
-
             jwtId = get_jwt_identity()
-            if not user.verify(jwtId):
-                return "Error: Unauthortized", 400
-
+            user = UserModel.getUserForId(jwtId)                
             loans = user.getLoans()
             loanDetails = []
             for loan in loans:
@@ -82,12 +73,15 @@ class Loan(Resource):
                 details["interestRate"] = loan.interestRate
                 details["startDate"] = loan.startDate.strftime("%d-%b-%Y")
                 details["termMonths"] = loan.termMonths
+                otherUserId =  loan.loaneeId if (loan.loanerId == user.id) else loan.loanerId
+                otherUserName = UserModel.getUserForId(otherUserId).firstName
+                details["withPerson"] = otherUserName
                 loanDetails.append(details)
 
-            return {"status": "success", "loanDetails": loanDetails}, 200
+            return {"success": True, "loanDetails": loanDetails, "msg": "returned loan details"}, 200
         except Exception as e:
             traceback.print_exc()
-            return f"Error: {e}", 400
+            raise(InternalServerError(e))
 
     @jwt_required
     def put(self): # Update the loan info

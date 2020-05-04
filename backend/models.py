@@ -189,10 +189,10 @@ class LoanModel(Base):
             overdue.append(min(0, overdue[i-1]*(1+monthlyInterestRate) + transactionSums[i] - self.monthlyPayment))
 
         dueThisMonth = min(0, self.monthlyPayment - transactionSums[currentBucket])
-        ammountRemaining = balance[currentBucket]
+        amountRemaining = balance[currentBucket]
         totalInterestPaidAtEnd = sum(interest)
 
-        return {"currentBucket": currentBucket, "dueThisMonth": dueThisMonth, "ammountRemaining": ammountRemaining, "payments": transactionSums, "totalInterestPaidAtEnd": totalInterestPaidAtEnd, "balance": balance, "overdue": overdue, "interest": interest, "principal": principal}
+        return {"currentBucket": currentBucket, "dueThisMonth": dueThisMonth, "loanValue": self.amount , "amountRemaining": amountRemaining, "payments": transactionSums, "totalInterestPaidAtEnd": totalInterestPaidAtEnd, "balance": balance, "overdue": overdue, "interest": interest, "principal": principal}
 
 
 

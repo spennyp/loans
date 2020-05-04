@@ -5,12 +5,12 @@
         <link rel="stylesheet" type="text/css" href="style.css">
         <script type="text/javascript" src="script.js"></script>
     </head>
-    <body>
+    <body onload="redirectIfLoggedIn()">
         <div class="topnav">
             <a href="index.html" class="verticalCenter" id="logo"><img src="img/logo.svg"></a>
         </div>
 
-        <div class="main">
+        <div class="main" id="loginMain">
             <div id="loginArea" class="horizontalCenter">
                 <div id="loginText">
                     Sign in to Loans
@@ -21,9 +21,6 @@
                     <button id="loginButton" type="button" onclick="login()">Sign in</button>
                 </form>
             </div>
-
-            <div id="test" type="button" onclick="logout()">test</div>
-
         </div>
    </body>
 </html>
