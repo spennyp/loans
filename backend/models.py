@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, or_, and_
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Boolean, Float, DateTime, Date
@@ -58,7 +58,7 @@ class UserModel(Base):
         return True if self.id == jwtId and self.authenticated == True else False  
 
     def getLoans(self):
-        return LoanModel.query.filter(LoanModel.loaneeId == self.id or LoanModel.loanerId == self.id)
+        return LoanModel.query.filter(or_(LoanModel.loaneeId == self.id,  LoanModel.loanerId == self.id))
 
 
 class PaymentModel(Base):
@@ -117,18 +117,18 @@ class LoanModel(Base):
 
     def __init__(self, loanName, creatorId, loanerId, loaneeId, amount, interestRate, termMonths, startDate):
         self.loanName = loanName
-        self.creatorId = creatorId
-        self.loanerId = loanerId
-        self.loaneeId = loaneeId
-        self.amount = amount
-        self.interestRate = interestRate / 100 # This is the nominal annual interest rate 
-        self.termMonths = termMonths
+        self.creatorId = int(creatorId)
+        self.loanerId = int(loanerId)
+        self.loaneeId = int(loaneeId)
+        self.amount = float(amount)
+        self.interestRate = float(interestRate) / 100 # This is the nominal annual interest rate 
+        self.termMonths = int(termMonths)
         self.startDate = startDate
         self.creationDate = datetime.today()
         self.accepted = False
         self.declined = False
         self.active = False
-        self.monthlyPayment = -float(np.pmt(self.interstRate/12, termMonths, amount))
+        self.monthlyPayment = -float(np.pmt(self.interestRate/12, self.termMonths, self.amount))
 
     @staticmethod
     def getLoanForId(id):
@@ -190,9 +190,10 @@ class LoanModel(Base):
 
         dueThisMonth = min(0, self.monthlyPayment - transactionSums[currentBucket])
         amountRemaining = balance[currentBucket]
+        currentInterestPaid = sum(interest[0:currentBucket])
         totalInterestPaidAtEnd = sum(interest)
 
-        return {"currentBucket": currentBucket, "dueThisMonth": dueThisMonth, "loanValue": self.amount , "amountRemaining": amountRemaining, "payments": transactionSums, "totalInterestPaidAtEnd": totalInterestPaidAtEnd, "balance": balance, "overdue": overdue, "interest": interest, "principal": principal}
+        return {"currentBucket": currentBucket, "dueThisMonth": dueThisMonth, "loanValue": self.amount , "amountRemaining": amountRemaining, "payments": transactionSums, "currentInterestPaid": currentInterestPaid, "totalInterestPaidAtEnd": totalInterestPaidAtEnd, "balance": balance, "overdue": overdue, "interest": interest, "principal": principal}
 
 
 

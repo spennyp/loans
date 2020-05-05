@@ -8,6 +8,7 @@ from flask_jwt_extended import (jwt_required, get_jwt_identity)
 from datetime import datetime
 from pprint import pprint
 from errors import *
+from sqlalchemy import or_, and_
 
 
 class Test(Resource):
@@ -66,6 +67,9 @@ class Loan(Resource):
             user = UserModel.getUserForId(jwtId)                
             loans = user.getLoans()
             loanDetails = []
+            totalLoanedAmount = 0
+            totalProjectedInterestPaid = 0
+            totalCurrentInterestPaid = 0
             for loan in loans:
                 details = loan.computeDetails()
                 details["loanName"] = loan.loanName
@@ -77,8 +81,17 @@ class Loan(Resource):
                 otherUserName = UserModel.getUserForId(otherUserId).firstName
                 details["withPerson"] = otherUserName
                 loanDetails.append(details)
+                totalLoanedAmount += details["loanValue"]
+                totalProjectedInterestPaid += details["totalInterestPaidAtEnd"]
+                totalCurrentInterestPaid += details["currentInterestPaid"]
 
-            return {"success": True, "loanDetails": loanDetails, "msg": "returned loan details"}, 200
+            overallSummary = {
+                "totalLoanedAmount": totalLoanedAmount,
+                "totalProjectedInterestPaid": totalProjectedInterestPaid,
+                "totalCurrentInterestPaid": totalCurrentInterestPaid
+            }
+
+            return {"success": True, "overallSummary": overallSummary, "loanDetails": loanDetails, "msg": "returned loan details"}, 200
         except Exception as e:
             traceback.print_exc()
             raise(InternalServerError(e))
@@ -92,10 +105,11 @@ class Loan(Resource):
     def post(self): # Create a new loan
         try:
             payload = request.get_json()
+            print(payload)
             try:
                 loanName = payload["loanName"]
-                loanerEmail = payload["loanerEmail"]
-                loaneeEmail = payload["loaneeEmail"]
+                loaner = payload["loaner"]
+                otherUserEmail = payload["otherUserEmail"]
                 amount = payload["amount"]
                 interestRate = payload["interestRate"]
                 termMonths = payload["termMonths"]
@@ -103,22 +117,30 @@ class Loan(Resource):
             except:
                 return f"Error: Invalid payload - {payload}", 400
 
-            # Make sure the users exist
-            loanerUser = UserModel.getUserForEmail(loanerEmail)
-            loaneeUser = UserModel.getUserForEmail(loaneeEmail)
-            if loanerUser is None or loaneeUser is None:
-                return "Error: Invalid email", 409 
-
-            # Make sure the user is the loanee or loaner
             jwtId = get_jwt_identity()
-            if not loanerUser.verify(jwtId) and not loaneeUser.verify(jwtId): 
-                return "Error: Unauthortized", 401
+
+            # Make sure the other user is not themselves
+            user = UserModel.getUserForId(jwtId)
+            if otherUserEmail == user.email:
+                return {"success": False, "msg":"Self loan"}, 400
+
+            # Make sure the other users exist
+            otherUser = UserModel.getUserForEmail(otherUserEmail)
+            if otherUser is None:
+                return {"success": False, "msg":"Invalid email"}, 400 
+
+            # Make sure they dont already have a loan with this name
+            if LoanModel.query.filter(and_(or_(LoanModel.loanerId == user.id, LoanModel.loaneeId == user.id), LoanModel.loanName == loanName)).first() is not None:
+                return {"success": False, "msg": "Name taken"}, 400
+
+            loanerUserId = user.id if loaner else otherUser.id
+            loaneeUserId = otherUser.id if loaner else user.id
 
             creatorId = jwtId
-            newLoan = LoanModel(loanName, creatorId, loanerUser.id, loaneeUser.id, amount, interestRate, termMonths, startDate)
+            newLoan = LoanModel(loanName, creatorId, loanerUserId, loaneeUserId, amount, interestRate, termMonths, startDate)
             dbSession.add(newLoan)
             dbSession.commit()
-            return "success", 200
+            return {"success": True}, 200
         except Exception as e:
             traceback.print_exc()
             return f"Error: {e}", 400

@@ -19,22 +19,26 @@
             <div class="leftColumn">
                 <div id="loansSummary">
                     <div class='summaryItem'>
-                        <div class='summaryTitle'>Total Amount Loaned</div>
+                        <div class='summaryTitle'>Total Amount <span id="loanedTitle">Loaned</span></div>
                         <div class='summaryValue' id="loanedValue">123</div>
                     </div>
                     <div class='summaryItem'>
-                        <div class='summaryTitle'>Total Earnings</div>
+                        <div class='summaryTitle'>Total <span id="earningsTitle">Earnings</span></div>
                         <div class='summaryValue' id="earningsValue">123</div>
                     </div>
                     <div class='summaryItem'>
-                        <div class='summaryTitle'>Projected Earnings</div>
+                        <div class='summaryTitle'>Projected <span id="projectedEarningsTitle">Earnings</span></div>
                         <div class='summaryValue' id="projectedEarningsValue">123</div>
                     </div>
                 </div>
 
-                <div id="loans">
-                    <div id="loanTitle">Loans</div>
+                
+                <div id="loanTitle">Loans</div>
+                <div class="button" id="newLoanbutton" onclick="toggleNewLoanModal()">New Loan</div>
 
+                <div id="loans">
+
+                    <!-- This info gets populated from http request -->
                     <!-- <div class="loanOverview">
                         <div class="loanLeft">
                                 <div class="loanTop">
@@ -66,20 +70,66 @@
                             </div>
                         </div>
                     </div> -->
-
-
-
                 </div>
             </div>
 
-
             <div class="rightColumn">
                 Insights
+                <!-- TODO -->
+
             </div>
 
+            <div id="newLoanModal" class="modal">
+                <div class="modalContent">
+                    <div class="close" onclick="toggleNewLoanModal()">&times;</div>
+                    <div id="newLoanHeader">Create a new loan proposal</div>
+                    <form id="loanForm" onclick="clearManualValidations()" onsubmit="proposeLoan();return false" action="#">
+                        <div class="formInput" id="loanerBorrowerInput">
+                            <div class="inputTitle">Are you lending or borrowing?</div>
+                            <select id="loanerBorrowerInput" name="loanerBorrowerInput" class="inputField">
+                                <option value="lending">lending</option>
+                                <option value="borrowing">borrowing</option>
+                            </select>
+                        </div>
 
+                        <div class="formInput formInputL">
+                            <div class="inputTitle">User email that the loan is with</div>
+                            <input type="email" id="otherUserEmail" name="userEmail" placeholder="johndoe@gmail.com" class="inputField" required>
+                        </div>
 
+                        <div class="formInput formInputR">
+                            <div class="inputTitle">Loan nickname</div>
+                            <input type="text" id="loanNickname" name="loanName" placeholder="Student Loan" class="inputField" required>
+                        </div>
 
+                        <div class="formInput formInputL">
+                            <div class="inputTitle">Loan value ($)</div>
+                            <input type="number" step="0.01" name="loanValue" placeholder="12000" class="inputField" min="1" required>
+                        </div>
+
+                        <div class="formInput formInputR">
+                            <div class="inputTitle">Interest Rate (%)</div>
+                            <input type="number" name="interestRate" step="0.01" placeholder="3.5" class="inputField" min="0" required>
+                        </div>
+
+                        <div class="formInput formInputL">
+                            <div class="inputTitle">Start date</div>
+                            <input type="date" name="startDate" placeholder="March 30, 2020" class="inputField" id="startDateField" required>
+                        </div>
+
+                        <div class="formInput formInputR">
+                            <div class="inputTitle">Term (months)</div>
+                            <input type="number" name="term" placeholder="18" class="inputField" min="1" required>
+                        </div>
+
+                        <input class="button" type="submit" value="Propose loan" id="proposeLoanButton">
+                        <div id="proposeLoanInfo">
+                            When you propose a loan, the other user will get a notification. <br>
+                            They can then accept or decline the loan terms.
+                        </div>
+                    </form> 
+                </div>
+            </div>
         </div>
    </body>
 </html>
